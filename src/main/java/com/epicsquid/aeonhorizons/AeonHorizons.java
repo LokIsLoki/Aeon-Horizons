@@ -13,7 +13,7 @@ public class AeonHorizons
     {
     public static final String MODID = "aeonhorizons";
     public static final String MODNAME = "Aeon Horizons";
-    public static final String VERSION = "0.0.1";
+    public static final String VERSION = "0.0.2";
 
     @SidedProxy(clientSide = "com.epicsquid.aeonhorizons.proxy.ClientProxy", serverSide = "com.epicsquid.aeonhorizons.proxy.ServerProxy")
     public static CommonProxy proxy;

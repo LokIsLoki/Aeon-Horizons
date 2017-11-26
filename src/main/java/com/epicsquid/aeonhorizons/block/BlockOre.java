@@ -1,5 +1,7 @@
 package com.epicsquid.aeonhorizons.block;
 
+import com.epicsquid.aeonhorizons.item.ItemResource;
+import com.epicsquid.aeonhorizons.item.ModItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -12,10 +14,12 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
 
+import java.util.Random;
+
 public class BlockOre extends BlockBase
     {
 
-    public static final PropertyEnum<OreType> VARIANT = PropertyEnum.create("type", OreType.class);
+    public static final PropertyEnum<EnumOreType> VARIANT = PropertyEnum.create("type", EnumOreType.class);
 
     public BlockOre()
         {
@@ -23,7 +27,7 @@ public class BlockOre extends BlockBase
 
         setHardness(3.0f);
         setResistance(5.0f);
-        setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, OreType.VORTEX));
+        setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, EnumOreType.VORTEX));
 
         setHarvestLevel("pickaxe", 2);
         }
@@ -31,9 +35,9 @@ public class BlockOre extends BlockBase
     @Override
     public void registerModels(Item item)
         {
-        for (int i = 0; i < OreType.values().length; i++)
+        for (int i = 0; i < EnumOreType.values().length; i++)
             {
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation("aeonhorizons:" + name, "type=" + OreType.byMetadata(i).getName()));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation("aeonhorizons:" + name, "type=" + EnumOreType.byMetadata(i).getName()));
             }
         }
 
@@ -46,10 +50,35 @@ public class BlockOre extends BlockBase
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items)
         {
-        for (int i = 0; i < OreType.METADATA_LOOKUP.length; i++)
+        for (int i = 0; i < EnumOreType.METADATA_LOOKUP.length; i++)
             {
             items.add(new ItemStack(this, 1, i));
             }
+        }
+
+    @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+        {
+        int meta = getMetaFromState(state);
+
+        if (meta == EnumOreType.STARDUST.getMetadata())
+            {
+            return ModItems.resource;
+            }
+
+        return super.getItemDropped(state, rand, fortune);
+        }
+
+    @Override
+    public int quantityDropped(IBlockState state, int fortune, Random random)
+        {
+        int meta = getMetaFromState(state);
+
+        if (meta == EnumOreType.STARDUST.getMetadata())
+            {
+            return random.nextInt(2) + 2 + (2 * fortune);
+            }
+        return super.quantityDropped(state, fortune, random);
         }
 
     /**
@@ -58,7 +87,7 @@ public class BlockOre extends BlockBase
     @Override
     public IBlockState getStateFromMeta(int meta)
         {
-        return this.getDefaultState().withProperty(VARIANT, OreType.byMetadata(meta));
+        return this.getDefaultState().withProperty(VARIANT, EnumOreType.byMetadata(meta));
         }
 
     /**
@@ -73,10 +102,15 @@ public class BlockOre extends BlockBase
     @Override
     public int damageDropped(IBlockState state)
         {
+        // Account for item drops from ores
+        if (state.getValue(VARIANT).equals(EnumOreType.STARDUST))
+            {
+            return ItemResource.EnumItemType.STARDUST.getMeta();
+            }
         return state.getValue(VARIANT).getMetadata();
         }
 
-    public enum OreType implements IStringSerializable
+    public enum EnumOreType implements IStringSerializable
         {
 
             VORTEX(0, "vortex"),
@@ -85,11 +119,11 @@ public class BlockOre extends BlockBase
             STARDUST(3, "stardust");
 
 
-        private static final OreType[] METADATA_LOOKUP = new OreType[values().length];
+        private static final EnumOreType[] METADATA_LOOKUP = new EnumOreType[values().length];
         private final int metadata;
         private final String name;
 
-        OreType(int metadata, String name)
+        EnumOreType(int metadata, String name)
             {
             this.metadata = metadata;
             this.name = name;
@@ -106,7 +140,7 @@ public class BlockOre extends BlockBase
             return this.metadata;
             }
 
-        public static OreType byMetadata(int metadata)
+        public static EnumOreType byMetadata(int metadata)
             {
             if (metadata < 0 || metadata >= METADATA_LOOKUP.length)
                 {
@@ -117,7 +151,7 @@ public class BlockOre extends BlockBase
 
         static
             {
-            for (OreType type : values())
+            for (EnumOreType type : values())
                 {
                 METADATA_LOOKUP[type.getMetadata()] = type;
                 }

@@ -3,7 +3,7 @@ package com.epicsquid.aeonhorizons.block;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import com.epicsquid.aeonhorizons.block.BlockOre.OreType;
+import com.epicsquid.aeonhorizons.block.BlockOre.EnumOreType;
 
 
 public class ItemBlockOre extends ItemBlock
@@ -19,7 +19,7 @@ public class ItemBlockOre extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack stack)
         {
-        return "tile.aeonhorizons.ore." + OreType.byMetadata(stack.getItemDamage()).getName();
+        return "tile.aeonhorizons.ore." + EnumOreType.byMetadata(stack.getItemDamage()).getName();
         }
 
     @Override
