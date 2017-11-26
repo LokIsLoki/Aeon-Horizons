@@ -1,0 +1,8 @@
+# Items
+item.aeonhorizons.resource.stardust.name=Stardust
+
+# Blocks
+tile.aeonhorizons.ore.nebula.name=Nebula Ore
+tile.aeonhorizons.ore.solar.name=Solar Ore
+tile.aeonhorizons.ore.vortex.name=Vortex Ore
+tile.aeonhorizons.ore.stardust.name=Stardust Ore

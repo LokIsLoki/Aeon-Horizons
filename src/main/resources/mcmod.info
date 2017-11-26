@@ -1,0 +1,16 @@
+[
+{
+  "modid": "aeonhorizons",
+  "name": "Aeon Horizons",
+  "description": "Seek the Horizon of Tomorrow, Gaze into Eternity",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["EpicSquid315"],
+  "credits": "EpicSquid315 for creating the mod",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
